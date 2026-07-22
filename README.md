@@ -2,7 +2,7 @@
 
 - Document ID: PROD-0004-SOURCE-README
 - Title: FistBound Source Repository
-- Version: 0.1.0-alpha
+- Version: 0.2.0-alpha
 - Status: Active Draft
 - Owner: Michael Knight
 - Last Updated: 2026-07-22
@@ -13,31 +13,31 @@
 
 FistBound is a compact third-person martial-arts action game derived from the KITS GameForge Unreal Engine foundation. The proposed first release is a seven-day playable containing a short combat trial, one standard enemy archetype, three encounters, and one boss.
 
-This repository currently contains the inherited application shell. It does not yet contain the proposed FistBound combat game.
+This repository contains the inherited application shell plus the Sprint 0001 combat trial implemented in C++ (player combat, one standard enemy, three encounters, checkpoint, one boss, victory/defeat/result flow, completion timer). The trial is editor-verified but not yet human-play-tested or packaged.
 
 ## Status
 
 | Field | Current value |
 | --- | --- |
 | Product ID | `PROD-0004` |
-| Product state | Planning; implementation bootstrap exists |
+| Product state | Sprint 0001 combat trial implemented; verification and packaging pending |
 | Engine | Unreal Engine 5.8.0 source build |
 | Initial platform | Windows |
 | Source path | `C:\UnrealProjects\FistBound` |
-| Source control | No Git metadata detected on 2026-07-22 |
+| Source control | Git repository, branch `main` |
 | Distribution | Unreleased |
 | Current product version | Unreleased |
 
 Observed on 2026-07-22:
 
-- the `FistBoundEditor` module builds and loads;
-- PIE starts in the inherited main menu and travels to `EmptyPlayable`;
-- Enhanced Input initializes and the pause menu is invoked;
-- the latest map check reports zero errors and zero warnings;
-- no game executable or packaged Windows build was found;
-- no player combat, enemy, boss, encounter, checkpoint, scoring, or result implementation was found.
+- the `FistBoundEditor` module builds (`Result: Succeeded`);
+- damage-contract automation tests pass headlessly (3/3);
+- a headless `-game` launch of `EmptyPlayable` bootstraps the trial and spawns all three encounters with no FistBound errors;
+- the inherited main-menu / travel / pause / loading shell remains intact and untouched;
+- no game executable or packaged Windows build exists yet;
+- no editor-authored game assets exist yet — the trial uses primitive placeholder visuals, runtime-built input, and a canvas HUD.
 
-See [`docs/current-state.md`](docs/current-state.md) for the evidence boundary.
+See [`docs/current-state.md`](docs/current-state.md) for the evidence boundary and [`docs/development.md`](docs/development.md) for the trial controls.
 
 ## Repository Map
 
@@ -80,4 +80,5 @@ The initial playable excludes multiplayer, online services, inventory, loot, ski
 
 ## Change Log
 
+- 0.2.0-alpha: Updated status for the Sprint 0001 C++ combat-trial implementation pass.
 - 0.1.0-alpha: Created the source-repository index from KITS governance and inspected project evidence.

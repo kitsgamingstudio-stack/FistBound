@@ -7,7 +7,7 @@
   "company": "Knight Integrated Technology Solutions",
   "productStatus": "Proposed",
   "currentProductState": "Planning; implementation bootstrap exists",
-  "implementationStatus": "GameForge-derived application shell observed; combat playable not implemented",
+  "implementationStatus": "Combat trial implemented in C++ (player combat, enemy, encounters, boss, checkpoint, victory/defeat/result, timer); editor-verified, packaged build pending",
   "readinessStatus": "Not Ready pending owner approvals and governance reconciliation",
   "currentProject": "FB-PROJ-0001 - Fistbound Initial Game (Proposed)",
   "currentSprint": "FB-SPRINT-0001 - Weekly Playable (Proposed)",
@@ -17,7 +17,7 @@
     "distribution": "source build"
   },
   "sourceRepository": {
-    "type": "local-directory-no-git-metadata-detected",
+    "type": "local-git-repository",
     "path": "C:\\UnrealProjects\\FistBound"
   },
   "governance": {

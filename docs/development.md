@@ -2,7 +2,7 @@
 
 - Document ID: PROD-0004-SOURCE-DEV
 - Title: FistBound Development Guide
-- Version: 0.1.0-alpha
+- Version: 0.1.1-alpha
 - Status: Active Draft
 - Owner: Michael Knight
 - Last Updated: 2026-07-22
@@ -68,6 +68,22 @@ Creating `Content/FistBound/` is part of the first game-specific implementation 
 - Add tests or a documented smoke check with every gameplay system.
 - Do not add dependencies, plugins, modules, or shared foundations without approval.
 
+## Trial Controls (current implementation)
+
+Combat input is created at runtime in `AFistBoundPlayerCharacter` (no input
+assets exist yet). The inherited GameForge context still provides pause.
+
+| Action | Keyboard/Mouse | Gamepad |
+| --- | --- | --- |
+| Move | WASD | Left stick |
+| Look | Mouse | Right stick |
+| Light attack (3-hit chain) | Left mouse button | X / Square |
+| Heavy attack | Right mouse button | Y / Triangle |
+| Dodge (0.3 s i-frames) | Space or Left Shift | B / Circle |
+| Restart / retry (result screens only) | R | A / Cross |
+| Return to menu (result screens only) | M | Select / View |
+| Pause | Inherited GameForge binding | Inherited GameForge binding |
+
 ## Configuration
 
 `DefaultEngine.ini` boots `MainMenu`, uses `UFistBoundGameInstance`, and selects the inherited `BP_GameForgeGameMode`. Preserve the GameForge class/name redirects while inherited Blueprint assets still reference their original parents.
@@ -86,4 +102,5 @@ The loading screen is configured with a two-second minimum so it is visible on s
 
 ## Change Log
 
+- 0.1.1-alpha: Documented the implemented trial controls.
 - 0.1.0-alpha: Created the source/content workflow and contribution boundaries.

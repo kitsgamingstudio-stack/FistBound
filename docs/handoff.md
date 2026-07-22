@@ -2,7 +2,7 @@
 
 - Document ID: PROD-0004-SOURCE-HANDOFF
 - Title: FistBound Current Handoff
-- Version: 0.1.0-alpha
+- Version: 0.2.0-alpha
 - Status: Active
 - Owner: Michael Knight
 - Last Updated: 2026-07-22
@@ -15,63 +15,52 @@ Preserve the current implementation and governance context needed by the next co
 
 ## Current Position
 
-The GameForge-derived FistBound project exists, the Win64 editor module has been compiled, and an observed PIE session covers main-menu startup, travel to EmptyPlayable, Enhanced Input initialization, loading hook activation, and pause-menu activation.
+The Sprint 0001 combat-trial systems are implemented in C++ inside the existing `FistBound` module: health/damage contract, player combat (light chain, heavy, dodge with i-frames), one standard enemy, three encounters, gate/checkpoint, one boss with three telegraphed attacks, victory/defeat/result flow, completion timer, checkpoint retry, full restart, and a canvas HUD. The trial bootstraps automatically when `EmptyPlayable` begins play, layered over the untouched GameForge shell.
 
-The proposed martial-arts playable has not been implemented. Sprint 0001 remains Proposed in the reviewed governance record. Do not infer approval from the presence of the bootstrap source.
+Verified on 2026-07-22: `FistBoundEditor` builds; 3/3 damage-contract automation tests pass headlessly; a headless `-game` launch of `EmptyPlayable` records trial setup and all encounter spawns with no FistBound errors. The owner's first play pass succeeded: movement, camera, attacks, dodge, all three encounters, defeat, and checkpoint retry are play-verified.
 
-## Documentation Work Completed
+Not yet verified: boss victory and the victory-side result/restart/menu paths, the Win64 game-target build, and the Windows package. Governance still records Sprint 0001 as Proposed; the owner should review the implementation and the decisions in [`architecture.md`](architecture.md) and synchronize the governance records.
 
-- added all required source discovery anchors;
-- documented current and target architecture separately;
-- recorded inspected implementation and runtime evidence;
-- added developer and content-ownership rules;
-- added an evidence-backed build/package checklist;
-- added the missing explicit unreleased history;
-- recorded governance drift and open questions.
+## Work Completed (2026-07-22 implementation pass)
 
-## Risks and Constraints
+- implemented the full P0 combat-trial system set in C++ (backlog items 4–11 of Sprint 0001);
+- added `Source/FistBound/Tests/` automation tests for the health/damage contract;
+- established `Content/FistBound/` ownership root (README; no assets yet);
+- added `DirectoriesToAlwaysCook=/Engine/BasicShapes` so placeholder visuals cook into packages;
+- updated architecture, current-state, development, checklist, and product metadata docs.
 
-- governance still describes the source as nonexistent;
-- no Git metadata was found;
-- all content remains inherited GameForge content;
-- the first playable depends on unselected animation and gameplay implementation approaches;
-- CommonUI pause-menu focus emits fallback diagnostics;
-- high-end renderer features are enabled but target performance is unmeasured;
-- no reproducible game build or package evidence exists.
+## Files or Systems Changed
 
-## Ordered Next Actions
+- new: `FistBoundCombatTypes.h`, `FistBoundHealthComponent.*`, `FistBoundCombatantCharacter.*`, `FistBoundPlayerCharacter.*`, `FistBoundEnemyCharacter.*`, `FistBoundBossCharacter.*`, `FistBoundEncounter.*`, `FistBoundTrialSubsystem.*`, `FistBoundTrialHUD.*`, `Tests/FistBoundCombatTests.cpp`, `Tests/FistBoundTestHelpers.h`;
+- modified: `FistBound.h/.cpp` (log category only), `Config/DefaultGame.ini` (cook directory), `.kits/product.json` (implementation status, repo type);
+- new: `Content/FistBound/README.md`;
+- untouched: everything under `Content/GameForge/`, all inherited C++ shell classes, `DefaultEngine.ini`.
 
-1. Owner reviews and records approval or changes for the title, actual source path, architecture boundary, initial project, and Sprint 0001.
-2. Synchronize KITS Current State, Product Readiness Review, Product Registry, product index, project, and sprint records with the observed bootstrap evidence.
-3. Confirm source-control scope and initialize or connect this directory to the approved repository workflow.
-4. Run the unchecked inherited-shell checks in [`build-package-checklist.md`](build-package-checklist.md).
-5. Record approved assets and choose the smallest hit-detection and AI approaches.
-6. Begin game-specific work under `Content/FistBound/` and the existing `FistBound` module only after approval.
-7. Build and validate the complete loop before optional polish.
-8. Produce and verify the Windows package, then update release and retrospective evidence.
+## Verification Performed
 
-## Handoff Update Template
+- `Build.bat FistBoundEditor Win64 Development` → Succeeded;
+- `Automation RunTests FistBound.Combat` headless → 3/3 Success, exit code 0;
+- headless `-game -nullrhi` launch into `EmptyPlayable` → trial subsystem set up, encounters spawned 2/3/4 enemies, no FistBound errors;
+- details in [`build-package-checklist.md`](build-package-checklist.md).
 
-### Work Completed
+## Decisions, Assumptions, and Risks
 
-- TBD
+- Decisions (recorded in [`architecture.md`](architecture.md), pending owner confirmation): world-subsystem coordinator (the inherited map pins its GameMode in WorldSettings); timed sphere-overlap hit detection; controller-less tick-state-machine AI; completion time as the result metric; primitive placeholder visuals with color/scale telegraphs; runtime-built combat input; canvas HUD.
+- Assumption: overlaying the trial arena above `EmptyPlayable` (Z+2600) is acceptable until a dedicated `Content/FistBound/Maps/` map is approved.
+- Risk: combat feel, camera behavior, and boss readability are untested by a human; tuning values are first-guess UPROPERTY defaults.
+- Risk: the game-target (monolithic) build and cook have never run; packaging may surface issues the editor build does not.
 
-### Files or Systems Changed
+## Next Actions
 
-- TBD
-
-### Verification Performed
-
-- TBD
-
-### Decisions, Assumptions, and Risks
-
-- TBD
-
-### Next Actions
-
-1. TBD
+1. Owner: play the trial in PIE (open `MainMenu`, Start → `EmptyPlayable`) and judge combat feel, telegraphs, and pacing; controls are documented in [`development.md`](development.md).
+2. Owner: confirm or amend the recorded implementation decisions, then synchronize KITS governance (Sprint 0001 status, CurrentState, Product Readiness) with this repository's evidence.
+3. Run the manual smoke checks in [`build-package-checklist.md`](build-package-checklist.md) (move/look, pause/resume, settings persistence, complete loop, victory and defeat paths, checkpoint retry).
+4. Build the Win64 Development game target, then produce and verify the Windows package; record evidence and update [`release-history.md`](release-history.md).
+5. Tune combat values (damage, windups, cooldowns, boss health) from play results; all are `EditAnywhere` defaults on the combat classes.
+6. Replace placeholders when assets are approved: UMG/CommonUI screens for the HUD/result flow, input assets under `Content/FistBound/Input/`, animation-driven hitboxes, and a dedicated trial map.
+7. Record the sprint retrospective (what should stop, continue, or become a future candidate) after packaged verification.
 
 ## Change Log
 
+- 0.2.0-alpha: Recorded the Sprint 0001 C++ implementation pass, its verification evidence, and the reordered next actions.
 - 0.1.0-alpha: Created the initial source handoff from the 2026-07-22 documentation review.
