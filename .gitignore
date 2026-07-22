@@ -1,22 +1,26 @@
-# Unreal Engine 5
-Binaries/
-DerivedDataCache/
-Intermediate/
-Saved/
-Build/
+# Unreal Engine 5 generated directories
+/Binaries/
+/DerivedDataCache/
+/Intermediate/
+/Saved/
 
-# Packaged builds
-Packaged/
+# Local build, staging, and packaged output
+/Build/
+/Packaged/
+/LocalBuilds/
+/Releases/
+/StagedBuilds/
 
-# Unreal plugin generated files
-Plugins/**/Binaries/
-Plugins/**/Intermediate/
-Plugins/**/Saved/
+# Generated files inside project plugins
+/Plugins/**/Binaries/
+/Plugins/**/DerivedDataCache/
+/Plugins/**/Intermediate/
+/Plugins/**/Saved/
 
-# Visual Studio / Rider / VS Code
-.vs/
-.vscode/
-.idea/
+# Visual Studio
+/.vs/
+*.sln
+*.slnx
 *.suo
 *.user
 *.userosscache
@@ -28,35 +32,43 @@ Plugins/**/Saved/
 *.opendb
 *.sdf
 
-# Generated project files
-*.sln
-*.slnx
+# Rider, VS Code, Xcode, and other generated project files
+/.idea/
+/.vscode/
+/.vsconfig.user
+*.code-workspace
 *.xcodeproj
 *.xcworkspace
+Makefile
 
-# Unreal Build Tool generated metadata
+# Unreal Build Tool metadata and compiler output
 *.target
 *.modules
 *.version
-
-# Build products and logs
-*.log
-*.tmp
 *.obj
 *.pdb
 *.ilk
-*.exe
-*.dll
-*.lib
-*.app
+*.exp
+*.pch
 
-# OS files
+# Logs, crash dumps, and temporary files
+*.log
+*.tmp
+*.temp
+*.dmp
+*.stackdump
+CrashReportClient.ini
+
+# Automation and test output
+/TestResults/
+/AutomationReports/
+
+# Operating-system metadata
 .DS_Store
+._*
 Thumbs.db
 Desktop.ini
+$RECYCLE.BIN/
 
-# Keep project source/assets/configuration tracked.
-!Config/
-!Content/
-!Source/
-!*.uproject
+# Source-controlled Unreal project files remain tracked by default:
+# Config/, Content/, Source/, Plugins/, *.uproject, documentation, and .vsconfig.
