@@ -19,7 +19,9 @@ The Sprint 0001 combat-trial systems are implemented in C++ inside the existing 
 
 Verified on 2026-07-22: `FistBoundEditor` builds; 3/3 damage-contract automation tests pass headlessly; a headless `-game` launch of `EmptyPlayable` records trial setup and all encounter spawns with no FistBound errors. The owner's first play pass succeeded: movement, camera, attacks, dodge, all three encounters, defeat, and checkpoint retry are play-verified.
 
-Not yet verified: boss victory and the victory-side result/restart/menu paths, the Win64 game-target build, and the Windows package. Governance still records Sprint 0001 as Proposed; the owner should review the implementation and the decisions in [`architecture.md`](architecture.md) and synchronize the governance records.
+Also completed on 2026-07-22: the Win64 Development game target builds (`FistBound.exe`), and the Windows package cooks, stages, and archives cleanly to `Saved/Packages/Windows` (3,183.2 MB, Development). Both a default packaged boot (MainMenu) and a packaged trial-map boot verified clean logs. KITS governance (`C:\KITS-Workspace`) was synchronized the same day: Sprint 0001 recorded In Progress, Decision 0002 added for the implementation approaches, registry/current-state/readiness records updated.
+
+Not yet verified: boss victory and the victory-side result/restart/menu paths, human play of the packaged loop, and packaged settings persistence. Formal confirmation of the in-practice approvals is pending in the governance readiness review.
 
 ## Work Completed (2026-07-22 implementation pass)
 
@@ -52,10 +54,10 @@ Not yet verified: boss victory and the victory-side result/restart/menu paths, t
 
 ## Next Actions
 
-1. Owner: play the trial in PIE (open `MainMenu`, Start → `EmptyPlayable`) and judge combat feel, telegraphs, and pacing; controls are documented in [`development.md`](development.md).
-2. Owner: confirm or amend the recorded implementation decisions, then synchronize KITS governance (Sprint 0001 status, CurrentState, Product Readiness) with this repository's evidence.
-3. Run the manual smoke checks in [`build-package-checklist.md`](build-package-checklist.md) (move/look, pause/resume, settings persistence, complete loop, victory and defeat paths, checkpoint retry).
-4. Build the Win64 Development game target, then produce and verify the Windows package; record evidence and update [`release-history.md`](release-history.md).
+1. Owner: defeat the boss and confirm the victory result, post-victory restart, and return-to-menu paths (the remaining unchecked play items in [`build-package-checklist.md`](build-package-checklist.md)).
+2. Owner: play the packaged build (`Saved/Packages/Windows/FistBound.exe`) through the full loop, including settings persistence and the visible loading screen.
+3. Owner: formally confirm the in-practice approvals listed in the governance readiness review (`C:\KITS-Workspace\Products\Fistbound\Onboarding\ProductReadinessReview.md`) and the Decision 0002 approaches.
+4. Decide the approved package output location (current archive location is provisional).
 5. Tune combat values (damage, windups, cooldowns, boss health) from play results; all are `EditAnywhere` defaults on the combat classes.
 6. Replace placeholders when assets are approved: UMG/CommonUI screens for the HUD/result flow, input assets under `Content/FistBound/Input/`, animation-driven hitboxes, and a dedicated trial map.
 7. Record the sprint retrospective (what should stop, continue, or become a future candidate) after packaged verification.

@@ -49,13 +49,12 @@ Blueprint and map internals were not parsed. Their behavior is claimed only wher
 
 ## Not Implemented or Not Verified
 
-- manual PIE/Standalone play-through of the complete loop (movement feel, combat feel, victory, defeat, checkpoint retry, result inputs);
+- boss victory and victory-side result/restart/menu paths in play (owner play pass covered movement, combat, encounters, defeat, and checkpoint retry);
+- human play of the packaged loop (packaged boots are log-verified only) and packaged settings persistence;
 - editor-authored assets under `Content/FistBound/` (maps, input assets, UMG screens, art, audio, VFX) — the trial is C++-only with primitive placeholder visuals;
 - skeletal animation (no animation assets exist in the project);
 - hit-stop, camera shake, sound effects, result grading (P1 scope, correctly deferred);
-- Win64 Development game target build;
-- packaged Windows output and packaged-loop verification;
-- release artifact or product version;
+- release artifact or product version (the 2026-07-22 package is development verification evidence, not a release);
 - settings persistence re-verification after relaunch.
 
 ## Governance Drift
@@ -66,9 +65,9 @@ Blueprint and map internals were not parsed. Their behavior is claimed only wher
 
 ## Verification Result
 
-The evidence supports: "Sprint 0001 combat-trial systems implemented in C++; editor target builds; damage-contract automation tests pass; the trial bootstraps in a real `-game` launch of EmptyPlayable with all encounters spawned."
+The evidence supports: "Sprint 0001 combat-trial systems implemented in C++; editor and game targets build; damage-contract automation tests pass; owner first play pass verified movement, combat, all encounters, defeat, and checkpoint retry; the Windows Development package cooks/stages/archives cleanly and boot-verifies into both the menu and the trial map."
 
-It does **not** yet support: "combat playable verified end to end," "game build complete," or "package complete." The complete-loop and packaging gates in [`build-package-checklist.md`](build-package-checklist.md) remain open.
+It does **not** yet support: "combat playable verified end to end" (boss victory pending) or "packaged loop passes" (human play of the package pending). The remaining gates are itemized in [`build-package-checklist.md`](build-package-checklist.md).
 
 ## Open Questions
 

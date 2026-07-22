@@ -27,7 +27,7 @@ Provide one repeatable checklist for validating the inherited shell and, when im
 - [x] Current startup-map check reports zero errors and zero warnings.
 - [x] No fatal error was found in the inspected editor log.
 - [x] A clean/reproducible editor build has been run and recorded. (2026-07-22 implementation evidence below.)
-- [ ] A Win64 Development game target has been built.
+- [x] A Win64 Development game target has been built. (`FistBound.exe`, 2026-07-22 package evidence below.)
 
 ## Inherited Foundation Smoke Check
 
@@ -63,14 +63,32 @@ Implemented in C++ on 2026-07-22. Checked items are owner-play-verified
 
 ## Windows Package
 
-- [ ] Package configuration and output path are recorded.
-- [ ] Win64 package succeeds without blocking cook or stage errors.
-- [ ] Packaged executable launches on the target machine.
-- [ ] Packaged main-menu and loading flow pass.
-- [ ] Packaged complete combat loop passes.
+- [x] Package configuration and output path are recorded. (Development config; `Saved/Packages/Windows` — provisional location pending owner approval.)
+- [x] Win64 package succeeds without blocking cook or stage errors. (`BUILD SUCCESSFUL`, 2026-07-22.)
+- [x] Packaged executable launches on the target machine. (Two headless boots on the build machine; see evidence.)
+- [ ] Packaged main-menu and loading flow pass. (Menu boots and the loading screen arms in the headless log; interactive Start-click travel and visible loading-screen presentation still need a human run.)
+- [ ] Packaged complete combat loop passes. (Trial bootstraps and all encounters spawn in the packaged trial-map boot; the full played loop needs a human run.)
 - [ ] Packaged settings persistence passes.
-- [ ] Logs contain no unresolved missing-class, missing-asset, or fatal errors.
-- [ ] Package location, date, size, build configuration, and verifier are recorded.
+- [x] Logs contain no unresolved missing-class, missing-asset, or fatal errors. (Both packaged boot logs scanned clean; the known CommonUI focus-fallback diagnostic persists as documented.)
+- [x] Package location, date, size, build configuration, and verifier are recorded. (See evidence below.)
+
+## Evidence: 2026-07-22 Windows Package Pass
+
+- Date: 2026-07-22
+- Verifier: Claude Code (automated pass), following the owner's confirmed first play pass
+- Engine build: `5.8.0` source build at `C:\UnrealEngineSource\UnrealEngine-5_8`
+- Source revision or snapshot: working tree on branch `main` (uncommitted at verification time)
+- Build configuration: Win64 Development
+- Commands:
+  - `Build.bat FistBound Win64 Development` → `Result: Succeeded` (links `Binaries/Win64/FistBound.exe`; first monolithic build, ~23 min)
+  - `RunUAT.bat BuildCookRun -platform=Win64 -clientconfig=Development -build -cook -stage -pak -package -archive` → `BUILD SUCCESSFUL` (93 s; warm DDC)
+- Package path: `Saved/Packages/Windows` (provisional; approved output location is an open question)
+- Package size: 3,183.2 MB (Development config with debug files; Shipping would be smaller)
+- Cook stats: 548 packages, 0 cook errors; UnrealPak success
+- Packaged boot 1 (no args, `-nullrhi -unattended`): boots to `MainMenu`, loading screen arms, `WBP_MainMenu` activates; no fatal errors
+- Packaged boot 2 (`EmptyPlayable -nullrhi -unattended`): trial subsystem sets up, encounters spawn 2/3/4 enemies; engine BasicShapes cooked correctly; no missing-asset or fatal errors
+- Relevant log path: `Saved/Packages/Windows/FistBound/Saved/Logs/`
+- Warnings accepted or follow-up tasks: human play of the packaged loop (menu → trial → result), packaged settings persistence, visible loading-screen check, and the pre-existing CommonUI focus-fallback diagnostic
 
 ## Evidence: 2026-07-22 Owner First Play Pass
 

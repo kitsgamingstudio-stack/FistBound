@@ -2,7 +2,7 @@
 
 - Document ID: PROD-0004-SOURCE-RELEASES
 - Title: FistBound Release History
-- Version: 0.1.0-alpha
+- Version: 0.1.1-alpha
 - Status: Active Draft
 - Owner: Michael Knight
 - Last Updated: 2026-07-22
@@ -15,9 +15,9 @@ Record released and packaged FistBound versions, or explicitly state when none e
 
 ## Current Release State
 
-FistBound is unreleased. No product version, release tag, packaged Windows artifact, public build, or customer release was found during the 2026-07-22 review.
+FistBound is unreleased. No product version, release tag, public build, or customer release exists.
 
-The existing Win64 editor DLL is a local development artifact and is not a release.
+A local Win64 Development package was produced on 2026-07-22 (`Saved/Packages/Windows`, 3,183.2 MB) as Sprint 0001 verification evidence — see [`build-package-checklist.md`](build-package-checklist.md). It is a development artifact, not a release: no version was assigned, and packaged-loop human verification is still pending.
 
 ## Release Records
 
@@ -43,4 +43,5 @@ Synchronize this record with the authoritative KITS Fistbound release history wh
 
 ## Change Log
 
+- 0.1.1-alpha: Noted the 2026-07-22 development package as verification evidence while keeping the unreleased state.
 - 0.1.0-alpha: Added the explicit unreleased baseline required by KDM-002.
