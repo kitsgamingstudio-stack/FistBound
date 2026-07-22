@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "productId": "PROD-0004",
+  "productName": "Fistbound",
+  "projectName": "FistBound",
+  "owner": "Michael Knight",
+  "company": "Knight Integrated Technology Solutions",
+  "productStatus": "Proposed",
+  "currentProductState": "Planning; implementation bootstrap exists",
+  "implementationStatus": "GameForge-derived application shell observed; combat playable not implemented",
+  "readinessStatus": "Not Ready pending owner approvals and governance reconciliation",
+  "currentProject": "FB-PROJ-0001 - Fistbound Initial Game (Proposed)",
+  "currentSprint": "FB-SPRINT-0001 - Weekly Playable (Proposed)",
+  "engine": {
+    "name": "Unreal Engine",
+    "targetVersion": "5.8.0",
+    "distribution": "source build"
+  },
+  "sourceRepository": {
+    "type": "local-directory-no-git-metadata-detected",
+    "path": "C:\\UnrealProjects\\FistBound"
+  },
+  "governance": {
+    "workspacePath": "C:\\KITS-Workspace",
+    "productIndex": "C:\\KITS-Workspace\\Products\\Fistbound\\README.md",
+    "productSpecification": "C:\\KITS-Workspace\\Products\\Fistbound\\Product\\ProductSpecification.md",
+    "architectureSummary": "C:\\KITS-Workspace\\Products\\Fistbound\\Architecture\\ArchitectureSummary.md",
+    "currentState": "C:\\KITS-Workspace\\Products\\Fistbound\\Product\\CurrentState.md",
+    "currentProject": "C:\\KITS-Workspace\\Products\\Fistbound\\Projects\\FistboundInitialGame.md",
+    "currentSprint": "C:\\KITS-Workspace\\Products\\Fistbound\\Sprints\\Sprint-0001-WeeklyPlayable.md"
+  },
+  "discoveryPath": [
+    "README.md",
+    "KITS_PRODUCT.md",
+    ".kits/product.json",
+    "docs/README.md",
+    "docs/current-state.md",
+    "C:\\KITS-Workspace\\Products\\Fistbound\\README.md"
+  ],
+  "scope": {
+    "initialPlatform": "Windows",
+    "foundation": "KITS GameForge",
+    "architecture": "One FistBound runtime module; hybrid C++ and Blueprint/UMG",
+    "initialOutcome": "Seven-day third-person martial-arts action playable"
+  },
+  "nonGoals": [
+    "Action Foundation extraction",
+    "Tower defense",
+    "Kingdom campaign",
+    "Multiplayer",
+    "Online services",
+    "Inventory and loot",
+    "Skill trees",
+    "Multiple playable characters",
+    "Multiple weapons",
+    "Open world",
+    "Procedural levels",
+    "Public release commitment"
+  ]
+}

@@ -1,0 +1,62 @@
+# Unreal Engine 5
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Build/
+
+# Packaged builds
+Packaged/
+
+# Unreal plugin generated files
+Plugins/**/Binaries/
+Plugins/**/Intermediate/
+Plugins/**/Saved/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+*.VC.db
+*.VC.VC.opendb
+*.opensdf
+*.opendb
+*.sdf
+
+# Generated project files
+*.sln
+*.slnx
+*.xcodeproj
+*.xcworkspace
+
+# Unreal Build Tool generated metadata
+*.target
+*.modules
+*.version
+
+# Build products and logs
+*.log
+*.tmp
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.lib
+*.app
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Keep project source/assets/configuration tracked.
+!Config/
+!Content/
+!Source/
+!*.uproject
