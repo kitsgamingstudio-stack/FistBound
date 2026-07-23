@@ -2,10 +2,10 @@
 
 - Document ID: PROD-0004-SOURCE-HANDOFF
 - Title: FistBound Current Handoff
-- Version: 0.2.0-alpha
+- Version: 0.3.0-alpha
 - Status: Active
 - Owner: Michael Knight
-- Last Updated: 2026-07-22
+- Last Updated: 2026-07-23
 - Next Review: At the next contributor handoff
 - Related Documents: [`current-state.md`](current-state.md), [`build-package-checklist.md`](build-package-checklist.md), [`../KITS_PRODUCT.md`](../KITS_PRODUCT.md)
 
@@ -22,6 +22,8 @@ Verified on 2026-07-22: `FistBoundEditor` builds; 3/3 damage-contract automation
 Also completed on 2026-07-22: the Win64 Development game target builds (`FistBound.exe`), and the Windows package cooks, stages, and archives cleanly to `Saved/Packages/Windows` (3,183.2 MB, Development). Both a default packaged boot (MainMenu) and a packaged trial-map boot verified clean logs. KITS governance (`C:\KITS-Workspace`) was synchronized the same day: Sprint 0001 recorded In Progress, Decision 0002 added for the implementation approaches, registry/current-state/readiness records updated.
 
 Not yet verified: boss victory and the victory-side result/restart/menu paths, human play of the packaged loop, and packaged settings persistence. Formal confirmation of the in-practice approvals is pending in the governance readiness review.
+
+On 2026-07-23, the next two ordered P1 gameplay features were implemented as one impact-feedback pass: confirmed player-involved hits now apply attack-tuned hit-stop and procedural camera shake. The editor target builds, 3/3 combat automation tests pass, and the trial still bootstraps headlessly. A human feel/tuning pass remains open.
 
 ## Work Completed (2026-07-22 implementation pass)
 
@@ -59,10 +61,13 @@ Not yet verified: boss victory and the victory-side result/restart/menu paths, h
 3. Owner: formally confirm the in-practice approvals listed in the governance readiness review (`C:\KITS-Workspace\Products\Fistbound\Onboarding\ProductReadinessReview.md`) and the Decision 0002 approaches.
 4. Decide the approved package output location (current archive location is provisional).
 5. Tune combat values (damage, windups, cooldowns, boss health) from play results; all are `EditAnywhere` defaults on the combat classes.
-6. Replace placeholders when assets are approved: UMG/CommonUI screens for the HUD/result flow, input assets under `Content/FistBound/Input/`, animation-driven hitboxes, and a dedicated trial map.
-7. Record the sprint retrospective (what should stop, continue, or become a future candidate) after packaged verification.
+6. Play-test impact feedback across the light chain, heavy attack, received jab, and boss slam; tune `HitStopSeconds`, `CameraShakeStrength`, and player feedback amplitudes as needed.
+7. Choose the next P1 item after feel verification: limited sound effects (requires an approved asset source), improved result grading, one boss reaction, or small environment polish.
+8. Replace placeholders when assets are approved: UMG/CommonUI screens for the HUD/result flow, input assets under `Content/FistBound/Input/`, animation-driven hitboxes, and a dedicated trial map.
+9. Record the sprint retrospective (what should stop, continue, or become a future candidate) after packaged verification.
 
 ## Change Log
 
+- 0.3.0-alpha: Recorded the hit-stop/camera-shake implementation pass, verification, and next P1 choices.
 - 0.2.0-alpha: Recorded the Sprint 0001 C++ implementation pass, its verification evidence, and the reordered next actions.
 - 0.1.0-alpha: Created the initial source handoff from the 2026-07-22 documentation review.

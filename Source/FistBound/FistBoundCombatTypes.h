@@ -54,6 +54,14 @@ struct FFistBoundAttackSpec
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FistBound|Combat", meta = (ClampMin = "0.0"))
 	float KnockbackStrength = 0.0f;
 
+	/** Real-time impact pause when this attack damages the local player or their target. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FistBound|Feedback", meta = (ClampMin = "0.0", ClampMax = "0.1"))
+	float HitStopSeconds = 0.035f;
+
+	/** Camera-impact intensity when this attack damages the local player or their target. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FistBound|Feedback", meta = (ClampMin = "0.0", ClampMax = "1.5"))
+	float CameraShakeStrength = 0.45f;
+
 	/** Centered on the attacker instead of projected forward (boss ground slam). */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FistBound|Combat")
 	bool bAreaOfEffect = false;

@@ -2,10 +2,10 @@
 
 - Document ID: PROD-0004-SOURCE-STATE
 - Title: FistBound Current Source State
-- Version: 0.2.0-alpha
+- Version: 0.3.0-alpha
 - Status: Verified Baseline
 - Owner: Michael Knight
-- Last Updated: 2026-07-22
+- Last Updated: 2026-07-23
 - Next Review: After manual PIE verification or the packaging pass
 - Related Documents: [`architecture.md`](architecture.md), [`build-package-checklist.md`](build-package-checklist.md), [`handoff.md`](handoff.md)
 
@@ -38,6 +38,7 @@ Blueprint and map internals were not parsed. Their behavior is claimed only wher
 | Health/damage contract | `UFistBoundHealthComponent` (health, team, invulnerability, delegates); 3/3 automation tests pass headlessly | High |
 | Combat base | `AFistBoundCombatantCharacter`: windup/active/recovery attack windows, sphere-overlap hit pulses, stagger, knockback, death handling | High for code presence; combat feel unverified |
 | Player character | `AFistBoundPlayerCharacter`: spring-arm combat camera, runtime-built Enhanced Input (move/look/light/heavy/dodge/restart/menu), 3-hit light chain, heavy, dodge with 0.3 s i-frames | High for code presence; manual play unverified |
+| Impact feedback | Confirmed local-player hits drive attack-tuned real-time hit-stop and procedural camera shake; invulnerable and enemy-only exchanges are filtered out | High for code presence/build; feel tuning unverified |
 | Standard enemy | `AFistBoundEnemyCharacter`: controller-less chase/attack state machine, jab attack, stagger, death | High for code presence |
 | Boss | `AFistBoundBossCharacter`: Crush / Flurry / Slam with distinct windups and telegraph colors; stagger- and knockback-immune; checkpoint-retry reset | High for code presence |
 | Encounters | `AFistBoundEncounter`: proximity activation, completion on last death; runtime log shows all three spawn with 2/3/4 enemies | High |
@@ -51,9 +52,10 @@ Blueprint and map internals were not parsed. Their behavior is claimed only wher
 
 - boss victory and victory-side result/restart/menu paths in play (owner play pass covered movement, combat, encounters, defeat, and checkpoint retry);
 - human play of the packaged loop (packaged boots are log-verified only) and packaged settings persistence;
+- manual feel/readability verification for the new hit-stop and camera shake tuning;
 - editor-authored assets under `Content/FistBound/` (maps, input assets, UMG screens, art, audio, VFX) — the trial is C++-only with primitive placeholder visuals;
 - skeletal animation (no animation assets exist in the project);
-- hit-stop, camera shake, sound effects, result grading (P1 scope, correctly deferred);
+- sound effects and result grading (remaining P1 scope); hit-stop and camera shake are implemented but need manual feel tuning;
 - release artifact or product version (the 2026-07-22 package is development verification evidence, not a release);
 - settings persistence re-verification after relaunch.
 
@@ -69,6 +71,8 @@ The evidence supports: "Sprint 0001 combat-trial systems implemented in C++; edi
 
 It does **not** yet support: "combat playable verified end to end" (boss victory pending) or "packaged loop passes" (human play of the package pending). The remaining gates are itemized in [`build-package-checklist.md`](build-package-checklist.md).
 
+On 2026-07-23, the P1 impact-feedback pass built successfully, retained 3/3 passing combat automation tests, and booted the trial map headlessly with all three encounters. Visual feel still requires a human play pass.
+
 ## Open Questions
 
 - Owner confirmation of the implementation decisions recorded in [`architecture.md`](architecture.md) (subsystem coordinator, sphere-overlap hit detection, controller-less AI, completion-time metric, primitive placeholder visuals, runtime-built input).
@@ -78,5 +82,6 @@ It does **not** yet support: "combat playable verified end to end" (boss victory
 
 ## Change Log
 
+- 0.3.0-alpha: Recorded implemented hit-stop/camera shake and its build, automation, and runtime-smoke evidence.
 - 0.2.0-alpha: Recorded the Sprint 0001 C++ combat-trial implementation, its build/test/runtime evidence, and the remaining verification gaps.
 - 0.1.0-alpha: Established the source baseline from project, artifact, log, and governance inspection.

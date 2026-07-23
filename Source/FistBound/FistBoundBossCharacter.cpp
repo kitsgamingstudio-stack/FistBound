@@ -29,6 +29,8 @@ AFistBoundBossCharacter::AFistBoundBossCharacter()
 	CrushSpec.Range = 200.0f;
 	CrushSpec.Radius = 110.0f;
 	CrushSpec.KnockbackStrength = 500.0f;
+	CrushSpec.HitStopSeconds = 0.055f;
+	CrushSpec.CameraShakeStrength = 0.9f;
 	CrushSpec.TelegraphColor = FLinearColor(1.0f, 0.5f, 0.05f);
 
 	FlurrySpec.Name = TEXT("Flurry");
@@ -39,6 +41,8 @@ AFistBoundBossCharacter::AFistBoundBossCharacter()
 	FlurrySpec.Range = 180.0f;
 	FlurrySpec.Radius = 90.0f;
 	FlurrySpec.KnockbackStrength = 100.0f;
+	FlurrySpec.HitStopSeconds = 0.025f;
+	FlurrySpec.CameraShakeStrength = 0.35f;
 	FlurrySpec.TelegraphColor = FLinearColor(1.0f, 0.9f, 0.1f);
 
 	SlamSpec.Name = TEXT("Slam");
@@ -48,6 +52,8 @@ AFistBoundBossCharacter::AFistBoundBossCharacter()
 	SlamSpec.Damage = 32.0f;
 	SlamSpec.Radius = 420.0f;
 	SlamSpec.KnockbackStrength = 700.0f;
+	SlamSpec.HitStopSeconds = 0.075f;
+	SlamSpec.CameraShakeStrength = 1.25f;
 	SlamSpec.bAreaOfEffect = true;
 	SlamSpec.TelegraphColor = FLinearColor(1.0f, 0.1f, 0.05f);
 }

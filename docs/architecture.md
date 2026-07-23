@@ -2,10 +2,10 @@
 
 - Document ID: PROD-0004-SOURCE-ARCH
 - Title: FistBound Implemented and Target Architecture
-- Version: 0.2.0-alpha
+- Version: 0.3.0-alpha
 - Status: Active Draft
 - Owner: Michael Knight
-- Last Updated: 2026-07-22
+- Last Updated: 2026-07-23
 - Next Review: After owner review of the Sprint 0001 implementation pass
 - Related Documents: [`current-state.md`](current-state.md), [`development.md`](development.md), [`../KITS_PRODUCT.md`](../KITS_PRODUCT.md)
 
@@ -37,7 +37,7 @@ FistBound runtime module
         +-- FistBoundTrialSubsystem: world subsystem game-flow coordinator
         +-- FistBoundHealthComponent: narrow health/damage/team contract
         +-- FistBoundCombatantCharacter: attack windows, hit query, stagger, death
-        |     +-- FistBoundPlayerCharacter: camera, input, light chain, heavy, dodge
+        |     +-- FistBoundPlayerCharacter: camera, input, light chain, heavy, dodge, local impact feedback
         |     +-- FistBoundEnemyCharacter: tick state-machine AI
         |           +-- FistBoundBossCharacter: three telegraphed attacks, retry reset
         +-- FistBoundEncounter: bounded spawn/activate/complete groups
@@ -86,6 +86,7 @@ Recorded here for governance synchronization; the owner should confirm or amend 
 5. **Placeholder visuals: engine primitive shapes.** No animation, character, or environment assets are owned/approved yet, so combatants are color-coded primitive rigs and telegraphs are body-tint plus fist-scale pulses during windup. The arena is spawned at runtime from engine cube meshes, floated above the inherited level to avoid touching or depending on its geometry.
 6. **Combat input is created at runtime in C++.** Light/heavy/dodge/restart/menu input actions and their keyboard/gamepad mappings are built in `FistBoundPlayerCharacter` at possession time (priority 1 context layered over the inherited pause context), because game-specific input assets cannot be authored without the editor. Replace with `Content/FistBound/Input/` assets later.
 7. **HUD is canvas-drawn C++.** `AFistBoundTrialHUD` reads the subsystem and health components and owns no combat rules. UMG/CommonUI screens under `Content/FistBound/UI/` should replace it during the polish pass.
+8. **Impact feedback is local-player scoped and asset-free.** A confirmed damaging hit invokes real-time hit-stop and procedural camera motion only when the local player is the attacker or victim. Per-attack duration/intensity live in `FFistBoundAttackSpec`; invulnerable dodges and enemy-only exchanges produce no feedback. The player restores both camera transform and prior global time dilation when feedback ends or the pawn leaves play.
 
 ## Dependency Rules
 
@@ -107,6 +108,7 @@ Enhanced Input (runtime-built trial context)
   -> attack window timers
   -> sphere-overlap hit query (team-filtered)
   -> UFistBoundHealthComponent (damage, invulnerability, death delegates)
+  -> confirmed local-player hit -> hit-stop + procedural camera shake
   -> victim stagger / knockback / death
   -> FistBoundEncounter completion -> FistBoundTrialSubsystem game flow
   -> FistBoundTrialHUD presentation
@@ -124,5 +126,6 @@ Enhanced Input (runtime-built trial context)
 
 ## Change Log
 
+- 0.3.0-alpha: Added asset-free, local-player-scoped hit-stop and procedural camera shake.
 - 0.2.0-alpha: Recorded the implemented Sprint 0001 combat-trial architecture and its implementation decisions.
 - 0.1.0-alpha: Documented the inspected foundation architecture and separated it from the proposed first-playable systems.

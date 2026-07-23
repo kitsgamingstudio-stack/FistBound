@@ -3,6 +3,7 @@
 #include "FistBoundCombatantCharacter.h"
 #include "FistBound.h"
 #include "FistBoundHealthComponent.h"
+#include "FistBoundPlayerCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/OverlapResult.h"
@@ -191,16 +192,31 @@ void AFistBoundCombatantCharacter::DoHitPulse()
 		HitActorsThisAttack.Add(Victim);
 		const float Applied = VictimHealth->ApplyDamage(CurrentAttack.Damage, this);
 
-		if (Applied > 0.0f && CurrentAttack.KnockbackStrength > 0.0f)
+		if (Applied > 0.0f)
 		{
-			if (AFistBoundCombatantCharacter* VictimCharacter = Cast<AFistBoundCombatantCharacter>(Victim))
+			// Impact feedback belongs to the local player's experience. Enemy-only
+			// exchanges stay silent, and invulnerable dodges never reach this branch.
+			AFistBoundPlayerCharacter* LocalPlayer = Cast<AFistBoundPlayerCharacter>(this);
+			if (!LocalPlayer)
 			{
-				if (!VictimCharacter->bKnockbackImmune)
+				LocalPlayer = Cast<AFistBoundPlayerCharacter>(Victim);
+			}
+			if (LocalPlayer && LocalPlayer->IsLocallyControlled())
+			{
+				LocalPlayer->PlayImpactFeedback(CurrentAttack, Victim == LocalPlayer);
+			}
+
+			if (CurrentAttack.KnockbackStrength > 0.0f)
+			{
+				if (AFistBoundCombatantCharacter* VictimCharacter = Cast<AFistBoundCombatantCharacter>(Victim))
 				{
-					FVector Push = Victim->GetActorLocation() - GetActorLocation();
-					Push.Z = 0.0f;
-					Push = Push.GetSafeNormal() * CurrentAttack.KnockbackStrength + FVector(0.0f, 0.0f, CurrentAttack.KnockbackStrength * 0.25f);
-					VictimCharacter->LaunchCharacter(Push, true, false);
+					if (!VictimCharacter->bKnockbackImmune)
+					{
+						FVector Push = Victim->GetActorLocation() - GetActorLocation();
+						Push.Z = 0.0f;
+						Push = Push.GetSafeNormal() * CurrentAttack.KnockbackStrength + FVector(0.0f, 0.0f, CurrentAttack.KnockbackStrength * 0.25f);
+						VictimCharacter->LaunchCharacter(Push, true, false);
+					}
 				}
 			}
 		}

@@ -17,6 +17,7 @@
 #include "InputActionValue.h"
 #include "InputMappingContext.h"
 #include "InputModifiers.h"
+#include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
 
 namespace
@@ -66,11 +67,100 @@ AFistBoundPlayerCharacter::AFistBoundPlayerCharacter()
 	LightChain.Add(MakeSpec(TEXT("Light2"), 0.12f, 0.1f, 0.3f, 12.0f, 130.0f, 85.0f, 120.0f, LightTelegraph));
 	LightChain.Add(MakeSpec(TEXT("Light3"), 0.2f, 0.1f, 0.45f, 16.0f, 150.0f, 95.0f, 300.0f, LightTelegraph));
 	HeavyAttack = MakeSpec(TEXT("Heavy"), 0.45f, 0.12f, 0.6f, 26.0f, 160.0f, 100.0f, 550.0f, FLinearColor(0.5f, 0.8f, 1.0f));
+
+	LightChain[2].HitStopSeconds = 0.045f;
+	LightChain[2].CameraShakeStrength = 0.7f;
+	HeavyAttack.HitStopSeconds = 0.06f;
+	HeavyAttack.CameraShakeStrength = 1.0f;
+}
+
+void AFistBoundPlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	if (Camera)
+	{
+		CameraNeutralRelativeTransform = Camera->GetRelativeTransform();
+	}
+}
+
+void AFistBoundPlayerCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	const double Now = FPlatformTime::Seconds();
+	if (bHitStopActive && Now >= HitStopEndRealSeconds)
+	{
+		UGameplayStatics::SetGlobalTimeDilation(this, SavedGlobalTimeDilation);
+		bHitStopActive = false;
+	}
+
+	if (!bCameraShakeActive || !Camera)
+	{
+		return;
+	}
+	if (Now >= CameraShakeEndRealSeconds)
+	{
+		Camera->SetRelativeTransform(CameraNeutralRelativeTransform);
+		bCameraShakeActive = false;
+		ActiveCameraShakeStrength = 0.0f;
+		return;
+	}
+
+	const double Duration = FMath::Max(CameraShakeEndRealSeconds - CameraShakeStartRealSeconds, 0.001);
+	const float Envelope = static_cast<float>((CameraShakeEndRealSeconds - Now) / Duration);
+	const double Elapsed = Now - CameraShakeStartRealSeconds;
+	const float Strength = ActiveCameraShakeStrength * FMath::Clamp(Envelope, 0.0f, 1.0f);
+	const float LocationAmplitude = ImpactShakeLocationAmplitude * Strength;
+	const float RotationAmplitude = ImpactShakeRotationAmplitude * Strength;
+
+	const FVector ShakeOffset(
+		0.0f,
+		FMath::Sin(static_cast<float>(Elapsed * 173.0)) * LocationAmplitude * 0.5f,
+		FMath::Sin(static_cast<float>(Elapsed * 229.0)) * LocationAmplitude);
+	const FRotator ShakeRotation(
+		FMath::Sin(static_cast<float>(Elapsed * 191.0)) * RotationAmplitude,
+		FMath::Sin(static_cast<float>(Elapsed * 149.0)) * RotationAmplitude * 0.6f,
+		FMath::Sin(static_cast<float>(Elapsed * 211.0)) * RotationAmplitude * 0.35f);
+
+	Camera->SetRelativeLocation(CameraNeutralRelativeTransform.GetLocation() + ShakeOffset);
+	Camera->SetRelativeRotation(CameraNeutralRelativeTransform.GetRotation().Rotator() + ShakeRotation);
 }
 
 bool AFistBoundPlayerCharacter::CanAct() const
 {
 	return Super::CanAct() && !bDodging;
+}
+
+void AFistBoundPlayerCharacter::PlayImpactFeedback(const FFistBoundAttackSpec& Attack, bool bReceivedHit)
+{
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	const float ReceivedMultiplier = bReceivedHit ? 1.2f : 1.0f;
+	const double Now = FPlatformTime::Seconds();
+	const float HitStopSeconds = FMath::Max(Attack.HitStopSeconds * ReceivedMultiplier, 0.0f);
+	if (HitStopSeconds > 0.0f)
+	{
+		if (!bHitStopActive)
+		{
+			SavedGlobalTimeDilation = UGameplayStatics::GetGlobalTimeDilation(this);
+			bHitStopActive = true;
+		}
+		HitStopEndRealSeconds = FMath::Max(HitStopEndRealSeconds, Now + HitStopSeconds);
+		UGameplayStatics::SetGlobalTimeDilation(this, FMath::Min(SavedGlobalTimeDilation, HitStopTimeDilation));
+	}
+
+	const float ShakeStrength = FMath::Max(Attack.CameraShakeStrength * ReceivedMultiplier, 0.0f);
+	if (ShakeStrength > 0.0f && Camera)
+	{
+		CameraShakeStartRealSeconds = Now;
+		CameraShakeEndRealSeconds = Now + ImpactShakeDurationSeconds;
+		ActiveCameraShakeStrength = FMath::Max(ActiveCameraShakeStrength, ShakeStrength);
+		bCameraShakeActive = true;
+	}
 }
 
 void AFistBoundPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -191,6 +281,7 @@ void AFistBoundPlayerCharacter::BuildTrialInput()
 
 void AFistBoundPlayerCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	RestoreImpactFeedback();
 	if (BoundLocalPlayer.IsValid() && TrialContext)
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = BoundLocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
@@ -199,6 +290,21 @@ void AFistBoundPlayerCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason
 		}
 	}
 	Super::EndPlay(EndPlayReason);
+}
+
+void AFistBoundPlayerCharacter::RestoreImpactFeedback()
+{
+	if (bHitStopActive)
+	{
+		UGameplayStatics::SetGlobalTimeDilation(this, SavedGlobalTimeDilation);
+		bHitStopActive = false;
+	}
+	if (bCameraShakeActive && Camera)
+	{
+		Camera->SetRelativeTransform(CameraNeutralRelativeTransform);
+		bCameraShakeActive = false;
+		ActiveCameraShakeStrength = 0.0f;
+	}
 }
 
 void AFistBoundPlayerCharacter::Move(const FInputActionValue& Value)

@@ -28,12 +28,18 @@ class FISTBOUND_API AFistBoundPlayerCharacter : public AFistBoundCombatantCharac
 public:
 	AFistBoundPlayerCharacter();
 
+	virtual void Tick(float DeltaSeconds) override;
+
 	UFUNCTION(BlueprintPure, Category = "FistBound|Combat")
 	bool IsDodging() const { return bDodging; }
 
 	virtual bool CanAct() const override;
 
+	/** Plays local hit-stop and procedural camera shake for a confirmed hit. */
+	void PlayImpactFeedback(const FFistBoundAttackSpec& Attack, bool bReceivedHit);
+
 protected:
+	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void OnAttackFinished(FName AttackName) override;
@@ -73,8 +79,22 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "FistBound|Input", meta = (ClampMin = "0.01"))
 	float GamepadLookScale = 1.0f;
 
+	/** Global dilation used during the short, real-time hit-stop window. */
+	UPROPERTY(EditAnywhere, Category = "FistBound|Feedback", meta = (ClampMin = "0.01", ClampMax = "1.0"))
+	float HitStopTimeDilation = 0.08f;
+
+	UPROPERTY(EditAnywhere, Category = "FistBound|Feedback", meta = (ClampMin = "0.01", ClampMax = "0.5"))
+	float ImpactShakeDurationSeconds = 0.16f;
+
+	UPROPERTY(EditAnywhere, Category = "FistBound|Feedback", meta = (ClampMin = "0.0", ClampMax = "30.0"))
+	float ImpactShakeLocationAmplitude = 8.0f;
+
+	UPROPERTY(EditAnywhere, Category = "FistBound|Feedback", meta = (ClampMin = "0.0", ClampMax = "5.0"))
+	float ImpactShakeRotationAmplitude = 1.2f;
+
 private:
 	void BuildTrialInput();
+	void RestoreImpactFeedback();
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -123,4 +143,13 @@ private:
 	bool bLightQueued = false;
 	bool bDodging = false;
 	float NextDodgeTime = 0.0f;
+
+	FTransform CameraNeutralRelativeTransform;
+	double HitStopEndRealSeconds = 0.0;
+	double CameraShakeStartRealSeconds = 0.0;
+	double CameraShakeEndRealSeconds = 0.0;
+	float SavedGlobalTimeDilation = 1.0f;
+	float ActiveCameraShakeStrength = 0.0f;
+	bool bHitStopActive = false;
+	bool bCameraShakeActive = false;
 };

@@ -2,10 +2,10 @@
 
 - Document ID: PROD-0004-SOURCE-VERIFY
 - Title: FistBound Build and Package Checklist
-- Version: 0.2.0-alpha
+- Version: 0.3.0-alpha
 - Status: Active Verification Record
 - Owner: Michael Knight
-- Last Updated: 2026-07-22
+- Last Updated: 2026-07-23
 - Next Review: Every build/package acceptance pass
 - Related Documents: [`current-state.md`](current-state.md), [`development.md`](development.md), [`handoff.md`](handoff.md)
 
@@ -60,6 +60,12 @@ Implemented in C++ on 2026-07-22. Checked items are owner-play-verified
 - [ ] Victory and defeat cannot occur simultaneously. (Guaranteed by the single state variable in code; victory not yet observed in play.)
 - [ ] Result UI shows the approved completion metric. (Defeat result with time observed; victory result pending.)
 - [ ] Restart and return-to-menu paths work after victory and defeat. (Post-defeat retry verified; post-victory paths and return-to-menu pending.)
+
+## P1 Combat Feel
+
+- [x] Confirmed player-involved hits trigger attack-tuned hit-stop and camera shake in source. (2026-07-23 build and headless smoke evidence.)
+- [x] Invulnerable dodges and enemy-only exchanges do not trigger local impact feedback. (Feedback is gated after positive applied damage and local-player participation.)
+- [ ] Light, heavy, received-hit, and boss-slam feedback strength is manually play-verified and tuned.
 
 ## Windows Package
 
@@ -138,5 +144,6 @@ Implemented in C++ on 2026-07-22. Checked items are owner-play-verified
 
 ## Change Log
 
+- 0.3.0-alpha: Added the 2026-07-23 P1 impact-feedback checks; editor build, 3/3 automation tests, and headless trial bootstrap passed, while feel tuning remains open.
 - 0.2.0-alpha: Recorded the Sprint 0001 implementation-pass evidence (editor build, automation tests, runtime bootstrap smoke) and checked the items it supports.
 - 0.1.0-alpha: Recorded inherited-shell evidence and established unchecked first-playable/package acceptance gates.
